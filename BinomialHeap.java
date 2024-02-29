@@ -10,6 +10,37 @@ public class BinomialHeap
 	public HeapNode last;
 	public HeapNode min;
 
+	// Make Heap with one node
+	// pre: node != null
+	BinomialHeap(HeapNode node)
+	{
+		this.size = 0;
+		this.min = node;
+
+		HeapNode curr = node;
+		while (curr.next != null && curr.next != node)
+		{
+			curr.parent = null;
+			this.size += (int)Math.pow(2, curr.rank); 
+			if (curr.item.key < this.min.item.key)
+				this.min = curr;
+			curr = curr.next;
+		}
+		if (curr.item.key < this.min.item.key)
+			this.min = curr;
+		
+		if (curr.next == null)
+			curr.next = curr;
+		this.last = curr;
+	}
+
+	BinomialHeap()
+	{
+		this.last = null;
+		this.min = null;
+		this.size = 0;
+	}
+
 	/**
 	 * 
 	 * pre: key > 0
@@ -19,7 +50,9 @@ public class BinomialHeap
 	 */
 	public HeapItem insert(int key, String info) 
 	{    
-		return; // should be replaced by student code
+		HeapItem new_item = new HeapItem(key, info);
+		this.meld(new BinomialHeap(new_item.node));
+		return new_item; // should be replaced by student code
 	}
 
 	/**
@@ -29,8 +62,8 @@ public class BinomialHeap
 	 */
 	public void deleteMin()
 	{
-		return; // should be replaced by student code
-
+		BinomialHeap children_heap = new BinomialHeap(this.min.child);
+		this.meld(children_heap);
 	}
 
 	/**
@@ -40,8 +73,19 @@ public class BinomialHeap
 	 */
 	public HeapItem findMin()
 	{
-		return null; // should be replaced by student code
+		return this.min.item;
 	} 
+
+	public void updateMin()
+	{
+		HeapNode curr = this.last.next;
+
+		while (curr != this.last)
+		{
+			if (curr.item.key < this.min.item.key)
+				this.min = curr;
+		}
+	}
 
 	/**
 	 * 
@@ -52,7 +96,31 @@ public class BinomialHeap
 	 */
 	public void decreaseKey(HeapItem item, int diff) 
 	{    
-		return; // should be replaced by student code
+		item.key -= diff;
+
+		HeapNode curr = item.node;
+		while (curr.parent != null && curr.parent.item.key > curr.item.key)
+		{
+			swapNodeItems(curr, curr.parent);
+			curr = curr.parent;
+		}
+
+		if (curr.parent == null) // maybe we need to update minimum in heap
+		{
+			this.updateMin();
+		}
+	}
+
+	// swapping items
+	// need to test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	public static void swapNodeItems(HeapNode n1, HeapNode n2)
+	{
+		HeapItem tmp = n1.item;
+		n1.item = n2.item;
+		n2.item = tmp;
+
+		n1.item.node = n1;
+		n2.item.node = n2;
 	}
 
 	/**
@@ -62,7 +130,8 @@ public class BinomialHeap
 	 */
 	public void delete(HeapItem item) 
 	{    
-		return; // should be replaced by student code
+		this.decreaseKey(item, item.key + 1); // promises it will be min
+		this.deleteMin();
 	}
 
 	/**
@@ -72,7 +141,7 @@ public class BinomialHeap
 	 */
 	public void meld(BinomialHeap heap2)
 	{
-		return; // should be replaced by student code   		
+		return; // should be replaced by student code
 	}
 
 	/**
@@ -82,7 +151,7 @@ public class BinomialHeap
 	 */
 	public int size()
 	{
-		return 42; // should be replaced by student code
+		return this.size; // should be replaced by student code
 	}
 
 	/**
@@ -93,7 +162,7 @@ public class BinomialHeap
 	 */
 	public boolean empty()
 	{
-		return false; // should be replaced by student code
+		return this.size <= 0; // should be replaced by student code
 	}
 
 	/**
@@ -103,7 +172,19 @@ public class BinomialHeap
 	 */
 	public int numTrees()
 	{
-		return 0; // should be replaced by student code
+		int cnt = 0;
+		HeapNode curr = this.last;
+
+		if (this.empty())
+			return 0;
+
+		do
+		{
+			curr = curr.next;
+			cnt++;
+		} while (curr != null);
+		
+		return cnt; // should be replaced by student code
 	}
 
 	/**
@@ -116,6 +197,24 @@ public class BinomialHeap
 		public HeapNode next;
 		public HeapNode parent;
 		public int rank;
+
+		HeapNode(HeapItem item, HeapNode child, HeapNode next, HeapNode parent, int rank)
+		{
+			this.item = item;
+			this.child = child;
+			this.next = next;
+			this.parent = parent;
+			this.rank = rank;
+		}
+
+		HeapNode(HeapItem item)
+		{
+			this.item = item;
+			this.child = null;
+			this.next = this;
+			this.parent = null;
+			this.rank = 0;
+		}
 	}
 
 	/**
@@ -126,6 +225,29 @@ public class BinomialHeap
 		public HeapNode node;
 		public int key;
 		public String info;
+
+		HeapItem(HeapNode node, int key, String info)
+		{
+			this.node = node;
+			this.key = key;
+			this.info = info;
+		}
+
+		HeapItem(int key, String info)
+		{
+			this.key = key;
+			this.info = info;
+			this.node = new HeapNode(this);
+		}
+	}
+
+	// Delete later!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	public static void main(String[] args)
+	{
+		System.out.println("Hello World");	
+
+
+
 	}
 
 }
