@@ -6,7 +6,7 @@
  */
 public class BinomialHeap
 {
-	public int size;
+	public int size; // TODO Where is 'size' maintained?
 	public HeapNode last;
 	public HeapNode min;
 
@@ -52,7 +52,7 @@ public class BinomialHeap
 	{    
 		HeapItem new_item = new HeapItem(key, info);
 		this.meld(new BinomialHeap(new_item.node));
-		return new_item; // should be replaced by student code
+		return new_item;
 	}
 
 	/**
@@ -60,7 +60,9 @@ public class BinomialHeap
 	 * Delete the minimal item
 	 *
 	 */
-	public void deleteMin()
+	public void deleteMin() 
+	// TODO wtf??? please code review with me 
+	// TODO update the new minimum
 	{
 		BinomialHeap children_heap = new BinomialHeap(this.min.child);
 		this.meld(children_heap);
@@ -71,7 +73,7 @@ public class BinomialHeap
 	 * Return the minimal HeapItem
 	 *
 	 */
-	public HeapItem findMin()
+	public HeapItem findMin() // OK
 	{
 		return this.min.item;
 	} 
@@ -128,9 +130,9 @@ public class BinomialHeap
 	 * Delete the item from the heap.
 	 *
 	 */
-	public void delete(HeapItem item) 
+	public void delete(HeapItem item) // OK
 	{    
-		this.decreaseKey(item, item.key + 1); // promises it will be min
+		this.decreaseKey(item, item.key + 1); // 'item.key = -1;' -  promises it will be min
 		this.deleteMin();
 	}
 
@@ -139,7 +141,7 @@ public class BinomialHeap
 	 * Meld the heap with heap2
 	 *
 	 */
-	public void meld(BinomialHeap heap2)
+	public void meld(BinomialHeap heap2) // TODO
 	{
 		return; // should be replaced by student code
 	}
@@ -151,7 +153,7 @@ public class BinomialHeap
 	 */
 	public int size()
 	{
-		return this.size; // should be replaced by student code
+		return this.size; 
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class BinomialHeap
 	 */
 	public boolean empty()
 	{
-		return this.size <= 0; // should be replaced by student code
+		return this.size <= 0;
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class BinomialHeap
 			cnt++;
 		} while (curr != null);
 		
-		return cnt; // should be replaced by student code
+		return cnt;
 	}
 
 	/**
