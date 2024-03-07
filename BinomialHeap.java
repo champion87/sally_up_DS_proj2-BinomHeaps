@@ -6,11 +6,17 @@
  */
 public class BinomialHeap
 {
+	// circular, one direction.
+	// TODO maintain rank
+
+
 	public int size; // TODO Where is 'size' maintained?
 	public HeapNode last;
 	public HeapNode min;
 
 	// Make Heap with one node
+	// Given a node that defines a binomials heap, initializes a new heap
+	// detaches the
 	// pre: node != null
 	BinomialHeap(HeapNode node)
 	{
@@ -55,15 +61,19 @@ public class BinomialHeap
 		return new_item;
 	}
 
+	private static HeapNode find_prev()
+
 	/**
 	 * 
 	 * Delete the minimal item
 	 *
 	 */
 	public void deleteMin() 
-	// TODO wtf??? please code review with me 
-	// TODO update the new minimum
+	// TODO update size
 	{
+		// TODO case only tree - simple
+		// TODO case many trees - cut from parent, close the top linked list cycle, meld.
+
 		BinomialHeap children_heap = new BinomialHeap(this.min.child);
 		this.meld(children_heap);
 	}
@@ -78,6 +88,7 @@ public class BinomialHeap
 		return this.min.item;
 	} 
 
+	// Assumes the heap is valid, makes this.min = minimun
 	public void updateMin()
 	{
 		HeapNode curr = this.last.next;
@@ -135,6 +146,9 @@ public class BinomialHeap
 		this.decreaseKey(item, item.key + 1); // 'item.key = -1;' -  promises it will be min
 		this.deleteMin();
 	}
+
+
+	private void link(); // TODO
 
 	/**
 	 * 
