@@ -16,7 +16,7 @@ public class BinomialHeap
 
 	// Make Heap with one node
 	// Given a node that defines a binomials heap, initializes a new heap
-	// detaches the
+	// detaches from parents if there are any
 	// pre: node != null
 	BinomialHeap(HeapNode node)
 	{
@@ -61,7 +61,16 @@ public class BinomialHeap
 		return new_item;
 	}
 
-	private static HeapNode find_prev()
+	// returns null if only one tree in heap
+	private HeapNode find_prev()
+	{
+		HeapNode c = this.min.next;
+		if (c == this.min)
+			return null; 
+		while (c.next != this.min)
+			c = c.next;
+		return c;
+	}
 
 	/**
 	 * 
@@ -75,6 +84,22 @@ public class BinomialHeap
 		// TODO case many trees - cut from parent, close the top linked list cycle, meld.
 
 		BinomialHeap children_heap = new BinomialHeap(this.min.child);
+
+		HeapNode prev = this.find_prev();
+		if (prev == null) // only one tree
+		{
+			this.min = children_heap.min;
+			this.last = children_heap.last;
+			this.size = children_heap.size;
+			return;
+		}
+
+		prev.next = this.min.next;
+		this.size = this.size - 1 - children_heap.size;
+		if (this.last == this.min)
+		{
+			this.last = prev;
+		}
 		this.meld(children_heap);
 	}
 
