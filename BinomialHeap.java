@@ -24,6 +24,12 @@ public class BinomialHeap
 		this.min = node;
 
 		HeapNode curr = node;
+
+		if (curr.next == curr) // only one tree
+		{
+			this.size = 1;
+		}
+
 		while (curr.next != null && curr.next != node)
 		{
 			curr.parent = null;
@@ -49,12 +55,20 @@ public class BinomialHeap
 
 	public void print()
 	{
-		// TODO
-	}
+		System.out.println(this.last == null);
+		HeapNode curr = this.last.next;
 
-	public void print(int depth)
-	{
-		
+		if (curr == curr.next)
+		{
+			System.out.println(curr.item.key);
+			return;
+		}
+
+		while (curr != null && curr != this.last.next)
+		{
+			System.out.println(curr.item.key);
+			curr = curr.next;
+		}
 	}
 
 	/**
@@ -67,7 +81,8 @@ public class BinomialHeap
 	public HeapItem insert(int key, String info) 
 	{    
 		HeapItem new_item = new HeapItem(key, info);
-		this.meld(new BinomialHeap(new_item.node));
+		BinomialHeap new_heap = new BinomialHeap(new_item.node);
+		this.meld(new_heap);
 		return new_item;
 	}
 
@@ -199,6 +214,8 @@ public class BinomialHeap
 		smaller.child = bigger;
 		bigger.parent = smaller;
 
+		System.out.print("smaller: ");
+		System.out.println(smaller);
 		return smaller;
 	}
 
@@ -219,12 +236,13 @@ public class BinomialHeap
 		if (heap2.empty()) { return; }
 		else if (this.empty())
 		{
+			System.out.println("this.empty()");
+
 			this.last = heap2.last;
 			this.min = heap2.min;
 			this.size = heap2.size;
 			return;
 		}
-
 
 		this.size += heap2.size;
 		if (this.min.item.key > heap2.min.item.key)
@@ -458,6 +476,41 @@ public class BinomialHeap
 
 		BinomialHeap b = new BinomialHeap();
 		b.insert(3, "3");
+
+		System.out.println("done inserting first item");	
+		b.insert(10, "syhjk");
+
+		System.out.println("done inserting 2 items");	
+
+
+		b.print();
+
+
+	}
+
+	public static void ignore_me(String[] args)
+	{
+		System.out.println("Hello World");	
+
+		BinomialHeap b = new BinomialHeap();
+		b.insert(3, "3");
+
+		System.out.println("done inserting first item");	
+
+		System.out.println("last.rank");
+		System.out.println(b.last.rank);
+
+		System.out.println("last.next");
+		System.out.println(b.last.next);
+
+		b.insert(10, "syhjk");
+
+		System.out.println("done inserting 2 items");	
+
+
+		b.print();
+
+
 	}
 
 }
