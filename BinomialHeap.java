@@ -344,6 +344,11 @@ public class BinomialHeap
 				head = head.next; i = i.next;
 			}
 		}
+		else if (is_carry)
+		{
+			head.next = carry;
+			head = head.next;
+		}
 
 		this.last = head;
 		this.last.next = new_list_start;
