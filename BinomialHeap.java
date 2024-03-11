@@ -10,8 +10,8 @@ public class BinomialHeap
 	// TODO maintain rank
 
 
-	public int size; // TODO Where is 'size' maintained?
-	public HeapNode last;
+	public int size; // maintained only in meld, deletemin
+	public HeapNode last; // the tree of highst rank
 	public HeapNode min;
 
 	// Make Heap with one node
@@ -172,17 +172,171 @@ public class BinomialHeap
 		this.deleteMin();
 	}
 
+	/*
+	 * responsible for maintaining:
+	 *  - rank
+	 *  - 
+	 * assumes a,b are of the same rank
+	 */
+	private HeapNode link(HeapNode a, HeapNode b) // unchecked
+	{
+		HeapNode bigger, smaller;
+		if (a.item.key > b.item.key) { bigger = a; smaller = b; }
+		else { bigger = b; smaller = a; }
 
-	private void link(); // TODO
+		smaller.rank++;
+		bigger.next = smaller.child;
+		smaller.child = bigger;
+		bigger.parent = smaller;
+
+		return smaller;
+	}
 
 	/**
 	 * 
 	 * Meld the heap with heap2
-	 *
+	 * responsible for maintaining:
+	 *  - size
+	 *  - 
+	 *	assumes the heaps are valid:
+	 *  - minimum is valid
+	 *  - size is valid
+	 *  - 
 	 */
 	public void meld(BinomialHeap heap2) // TODO
 	{
-		return; // should be replaced by student code
+		// edge cases - done
+		if (heap2.empty()) { return; }
+		else if (this.empty())
+		{
+			this.last = heap2.last;
+			this.min = heap2.min;
+			this.size = heap2.size;
+			return;
+		}
+
+
+		this.size += heap2.size;
+		if (this.min.item.key > heap2.min.item.key)
+		{
+			this.min = heap2.min;
+		}
+
+		HeapNode new_list_start = null;
+		boolean is_first_node = true;
+		HeapNode head = null;
+		int curr_rank = 0;
+		HeapNode tmp1 = null;
+		HeapNode tmp2 = null;
+		HeapNode curr1 = this.last.next;
+		HeapNode curr2 = heap2.last.next;
+		HeapNode carry = null;
+		boolean is_carry = false;
+
+		this.last.next = null;
+		heap2.last.next = null;
+
+		while (curr1 != null && curr2 != null)
+		{
+			if (is_carry)
+			{
+				if (curr_rank == curr1.rank && curr_rank == curr2.rank)
+				{
+					is_carry = true;
+
+					if (is_first_node) { new_list_start = carry; head = carry; }
+					else { head.next = carry; head = head.next; }
+
+					tmp1 = curr1.next; tmp2 = curr2.next;
+					carry = link(curr1, curr2);
+					curr1 = tmp1; curr2 = tmp2;
+				}
+				else if (curr_rank == curr1.rank && curr_rank != curr2.rank)
+				{
+					is_carry = true;
+
+					tmp1 = curr1.next;
+					carry = link(curr1, carry);
+					curr1 = tmp1;
+				}
+				else if (curr_rank != curr1.rank && curr_rank == curr2.rank)
+				{
+					is_carry = true;
+
+					tmp2 = curr2.next;
+					carry = link(curr2, carry);
+					curr2 = tmp2;
+				}
+				else if (curr_rank != curr1.rank && curr_rank != curr2.rank)
+				{
+					is_carry = false;
+
+					if (is_first_node) { new_list_start = carry; head = carry; }
+					else { head.next = carry; head = head.next; }
+				}
+			}
+			else
+			{
+				if (curr_rank == curr1.rank && curr_rank == curr2.rank)
+				{
+					is_carry = true;
+
+					tmp2 = curr2.next;
+					carry = link(curr2, carry);
+					curr2 = tmp2;
+				}
+				else if (curr_rank == curr1.rank && curr_rank != curr2.rank)
+				{
+					is_carry = false;
+
+					if (is_first_node) { new_list_start = curr1; head = curr1; }
+					else { head.next = curr1; head = head.next; }
+					curr1 = curr1.next;
+				}
+				else if (curr_rank != curr1.rank && curr_rank == curr2.rank)
+				{
+					is_carry = false;
+
+					if (is_first_node) { new_list_start = curr2; head = curr2; }
+					else { head.next = curr2; head = head.next; }
+					curr2 = curr2.next;
+				}
+				else if (curr_rank != curr1.rank && curr_rank != curr2.rank)
+				{
+					is_carry = false;
+
+					// nothing to do here!
+				}
+			}
+			curr_rank++;
+		}
+
+
+		//TODO carry and both null
+
+		HeapNode i = null;
+		HeapNode tmp = null;
+		if (curr1 != null || curr2 != null) 
+		{
+			if (curr1 != null) 	{ i = curr1; }
+			else 				{ i = curr2; }
+
+			if (is_carry)
+			{
+				tmp = i.next;
+				head.next = link(i, carry);
+				i = tmp;
+			}
+
+			while (i != null) // crucial, since head should go all the way down.
+			{
+				head.next = i;
+				head = head.next; i = i.next;
+			}
+		}
+
+		this.last = head;
+		this.last.next = new_list_start;
 	}
 
 	/**
@@ -287,8 +441,8 @@ public class BinomialHeap
 	{
 		System.out.println("Hello World");	
 
-
-
+		BinomialHeap b = new BinomialHeap();
+		b.insert(3, "3");
 	}
 
 }
