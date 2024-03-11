@@ -47,6 +47,16 @@ public class BinomialHeap
 		this.size = 0;
 	}
 
+	public void print()
+	{
+		// TODO
+	}
+
+	public void print(int depth)
+	{
+		
+	}
+
 	/**
 	 * 
 	 * pre: key > 0
