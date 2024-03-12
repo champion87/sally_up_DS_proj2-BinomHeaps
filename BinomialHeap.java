@@ -14,37 +14,6 @@ public class BinomialHeap
 	public HeapNode last; // the tree of highst rank
 	public HeapNode min;
 
-	// Make Heap with one node
-	// Given a node that defines a binomials heap, initializes a new heap
-	// detaches from parents if there are any
-	// pre: node != null
-	BinomialHeap(HeapNode node)
-	{
-		this.size = 0;
-		this.min = node;
-
-		HeapNode curr = node;
-
-		if (curr.next == curr) // only one tree
-		{
-			this.size = 1;
-		}
-
-		while (curr.next != null && curr.next != node)
-		{
-			curr.parent = null;
-			this.size += (int)Math.pow(2, curr.rank); 
-			if (curr.item.key < this.min.item.key)
-				this.min = curr;
-			curr = curr.next;
-		}
-		if (curr.item.key < this.min.item.key)
-			this.min = curr;
-		
-		if (curr.next == null)
-			curr.next = curr;
-		this.last = curr;
-	}
 
 	BinomialHeap()
 	{
@@ -52,6 +21,42 @@ public class BinomialHeap
 		this.min = null;
 		this.size = 0;
 	}
+
+
+	// Make Heap with one node
+	// Given a node that defines a binomials heap, initializes a new heap
+	// detaches from parents if there are any
+	// pre: node != null
+	public static BinomialHeap node_to_heap(HeapNode node)
+	{
+		BinomialHeap new_heap = new BinomialHeap();
+		new_heap.size = 0;
+		new_heap.min = node;
+
+		HeapNode curr = node;
+
+		if (curr.next == curr) // only one tree
+		{
+			new_heap.size = 1;
+		}
+
+		while (curr.next != null && curr.next != node)
+		{
+			curr.parent = null;
+			new_heap.size += (int)Math.pow(2, curr.rank); 
+			if (curr.item.key < new_heap.min.item.key)
+				new_heap.min = curr;
+			curr = curr.next;
+		}
+		if (curr.item.key < new_heap.min.item.key)
+			new_heap.min = curr;
+		
+		if (curr.next == null)
+			curr.next = curr;
+		new_heap.last = curr;
+		return new_heap;
+	}
+
 
 	public void print()
 	{
@@ -81,7 +86,7 @@ public class BinomialHeap
 	public HeapItem insert(int key, String info) 
 	{    
 		HeapItem new_item = new HeapItem(key, info);
-		BinomialHeap new_heap = new BinomialHeap(new_item.node);
+		BinomialHeap new_heap = node_to_heap(new_item.node);
 		this.meld(new_heap);
 		return new_item;
 	}
@@ -108,7 +113,7 @@ public class BinomialHeap
 		// TODO case only tree - simple
 		// TODO case many trees - cut from parent, close the top linked list cycle, meld.
 
-		BinomialHeap children_heap = new BinomialHeap(this.min.child);
+		BinomialHeap children_heap = node_to_heap(this.min.child);
 
 		HeapNode prev = this.find_prev();
 		if (prev == null) // only one tree
@@ -309,8 +314,11 @@ public class BinomialHeap
 				{
 					is_carry = true;
 
+					tmp1 = curr1.next;
 					tmp2 = curr2.next;
-					carry = link(curr2, carry);
+					System.out.println("wow");
+					carry = link(curr2, curr1);
+					curr1 = tmp1;
 					curr2 = tmp2;
 				}
 				else if (curr_rank == curr1.rank && curr_rank != curr2.rank)
@@ -364,6 +372,7 @@ public class BinomialHeap
 		}
 		else if (is_carry)
 		{
+			// TODO case head === null
 			head.next = carry;
 			head = head.next;
 		}
@@ -478,7 +487,7 @@ public class BinomialHeap
 		b.insert(3, "3");
 
 		System.out.println("done inserting first item");	
-		b.insert(10, "syhjk");
+		//b.insert(10, "syhjk");
 
 		System.out.println("done inserting 2 items");	
 
@@ -487,30 +496,4 @@ public class BinomialHeap
 
 
 	}
-
-	public static void ignore_me(String[] args)
-	{
-		System.out.println("Hello World");	
-
-		BinomialHeap b = new BinomialHeap();
-		b.insert(3, "3");
-
-		System.out.println("done inserting first item");	
-
-		System.out.println("last.rank");
-		System.out.println(b.last.rank);
-
-		System.out.println("last.next");
-		System.out.println(b.last.next);
-
-		b.insert(10, "syhjk");
-
-		System.out.println("done inserting 2 items");	
-
-
-		b.print();
-
-
-	}
-
 }
