@@ -223,6 +223,10 @@ public class BinomialHeap
 		return smaller;
 	}
 
+	// private static HeapNode append(list_start, head) -> the new head
+
+	// private static HeapNode 
+
 	/**
 	 * 
 	 * Meld the heap with heap2
@@ -268,6 +272,7 @@ public class BinomialHeap
 		this.last.next = null;
 		heap2.last.next = null;
 
+		// add until one of the lists is over
 		while (curr1 != null && curr2 != null)
 		{
 			if (is_carry)
@@ -346,35 +351,61 @@ public class BinomialHeap
 			curr_rank++;
 		}
 
-
+		// one of the lists is over
+		// the end list is maybe uninitialized
+		// there might be carry
 		//TODO carry and both null
 
 		HeapNode i = null;
 		HeapNode tmp = null;
-		if (curr1 != null || curr2 != null) 
+		if (curr1 != null || curr2 != null) // continue on one list
 		{
+			// choosing what list to run on
 			if (curr1 != null) 	{ i = curr1; }
 			else 				{ i = curr2; }
 
-			if (is_carry)
+			// continue adding
+			while (i != null) 	// head should go all the way down.
 			{
-				tmp = i.next;
-				head.next = link(i, carry);
-				i = tmp;
-			}
+				if (is_carry)	
+				{
+					if (i.rank == curr_rank) // carry goes on
+					{
+						is_carry = true;
 
-			while (i != null) // crucial, since head should go all the way down.
-			{
-				head.next = i;
-				head = head.next; i = i.next;
+						tmp = i.next;
+						carry = link(i, carry);
+						i = tmp;
+
+						curr_rank++;
+					}
+					else					// carry is pluged in, and we won't have another carry
+					{
+						is_carry = false;
+
+						if (is_first_node) { new_list_start = carry; head = carry; }
+						else { head.next = carry; head = head.next; }
+					}
+				}
+				else // just concat 'i' to 'head'
+				{
+					is_carry = false;
+
+					head.next = i;
+					head = head.next; i = i.next;
+				}
 			}
 		}
-		else if (is_carry)
+		
+		// both lists are gone
+		// there still might be carry
+		if (is_carry)
 		{
-			// TODO case head === null
-			head.next = carry;
-			head = head.next;
+			if (is_first_node) { new_list_start = carry; head = carry; }
+			else { head.next = carry; head = head.next; }
 		}
+		
+		
 
 		this.last = head;
 		this.last.next = new_list_start;
