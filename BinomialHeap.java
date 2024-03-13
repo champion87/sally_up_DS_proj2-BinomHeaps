@@ -110,7 +110,6 @@ public class BinomialHeap
 	public void deleteMin() 
 	// TODO update size
 	{
-		// TODO case only tree - simple
 		// TODO case many trees - cut from parent, close the top linked list cycle, meld.
 
 		BinomialHeap children_heap = node_to_heap(this.min.child);
