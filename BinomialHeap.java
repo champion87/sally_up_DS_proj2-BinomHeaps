@@ -215,7 +215,16 @@ public class BinomialHeap
 		else { bigger = b; smaller = a; }
 
 		smaller.rank++;
-		bigger.next = smaller.child;
+
+		if (smaller.child == null)
+		{
+			bigger.next = bigger;
+		}
+		else
+		{
+			bigger.next = smaller.child;
+		}
+
 		smaller.child = bigger;
 		bigger.parent = smaller;
 
@@ -473,7 +482,7 @@ public class BinomialHeap
 		{
 			curr = curr.next;
 			cnt++;
-		} while (curr != null);
+		} while (curr != this.last);
 		
 		return cnt;
 	}
@@ -557,10 +566,19 @@ public class BinomialHeap
 	{
 		
 		BinomialHeap b1 = new BinomialHeap();
-		b1.insert(1, "");
+		b1.insert(2, "");
+
+		b1.insert(3, "");
+		b1.insert(4,"");
+
+		b1.insert(5, "");
+		b1.insert(6, "");
+		b1.insert(7,"");
+		b1.insert(8,"");
+
 
 		BinomialHeap b2 = new BinomialHeap();
-		b2.insert(2, "");
+		b2.insert(1, "");
 
 		b1.meld(b2);
 		System.out.println("done-----------------");
