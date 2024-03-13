@@ -253,6 +253,8 @@ public class BinomialHeap
 			return;
 		}
 
+		// from now on, both lists have at least one element.
+
 		this.size += heap2.size;
 		if (this.min.item.key > heap2.min.item.key)
 		{
@@ -270,19 +272,27 @@ public class BinomialHeap
 		HeapNode carry = null;
 		boolean is_carry = false;
 
-		this.last.next = null;
-		heap2.last.next = null;
+		int nodes_left1 = this.numTrees();
+		int nodes_left2 = heap2.numTrees();
+
+		boolean done1 = false;
+		boolean done2 = false;
+
+		//xxx this.last.next = null;
+		//xxx heap2.last.next = null;
 
 		// add until one of the lists is over
-		while (curr1 != null && curr2 != null)
+		while (!done1 && !done2)
 		{
 			if (is_carry)
 			{
 				if (curr_rank == curr1.rank && curr_rank == curr2.rank)
 				{
 					is_carry = true;
+					nodes_left1--;
+					nodes_left2--;
 
-					if (is_first_node) { new_list_start = carry; head = carry; }
+					if (is_first_node) { new_list_start = carry; head = carry; is_first_node = false; }
 					else { head.next = carry; head = head.next; }
 
 					tmp1 = curr1.next; tmp2 = curr2.next;
@@ -292,6 +302,7 @@ public class BinomialHeap
 				else if (curr_rank == curr1.rank && curr_rank != curr2.rank)
 				{
 					is_carry = true;
+					nodes_left1--;
 
 					tmp1 = curr1.next;
 					carry = link(curr1, carry);
@@ -300,6 +311,7 @@ public class BinomialHeap
 				else if (curr_rank != curr1.rank && curr_rank == curr2.rank)
 				{
 					is_carry = true;
+					nodes_left2--;
 
 					tmp2 = curr2.next;
 					carry = link(curr2, carry);
@@ -309,7 +321,7 @@ public class BinomialHeap
 				{
 					is_carry = false;
 
-					if (is_first_node) { new_list_start = carry; head = carry; }
+					if (is_first_node) { new_list_start = carry; head = carry; is_first_node = false; }
 					else { head.next = carry; head = head.next; }
 				}
 			}
@@ -318,6 +330,8 @@ public class BinomialHeap
 				if (curr_rank == curr1.rank && curr_rank == curr2.rank)
 				{
 					is_carry = true;
+					nodes_left1--;
+					nodes_left2--;
 
 					tmp1 = curr1.next;
 					tmp2 = curr2.next;
@@ -329,16 +343,18 @@ public class BinomialHeap
 				else if (curr_rank == curr1.rank && curr_rank != curr2.rank)
 				{
 					is_carry = false;
+					nodes_left1--;
 
-					if (is_first_node) { new_list_start = curr1; head = curr1; }
+					if (is_first_node) { new_list_start = curr1; head = curr1; is_first_node = false; }
 					else { head.next = curr1; head = head.next; }
 					curr1 = curr1.next;
 				}
 				else if (curr_rank != curr1.rank && curr_rank == curr2.rank)
 				{
 					is_carry = false;
+					nodes_left2--;
 
-					if (is_first_node) { new_list_start = curr2; head = curr2; }
+					if (is_first_node) { new_list_start = curr2; head = curr2; is_first_node = false; }
 					else { head.next = curr2; head = head.next; }
 					curr2 = curr2.next;
 				}
@@ -349,8 +365,13 @@ public class BinomialHeap
 					// nothing to do here!
 				}
 			}
+			
 			curr_rank++;
+
+			done1 = (nodes_left1 == 0);
+			done2 = (nodes_left2 == 0);
 		}
+		// exits when one of the lists is finished
 
 		// one of the lists is over
 		// the end list is maybe uninitialized
@@ -358,46 +379,48 @@ public class BinomialHeap
 		//TODO carry and both null
 
 		HeapNode i = null;
+		int to_go;
 		HeapNode tmp = null;
-		if (curr1 != null || curr2 != null) // continue on one list
+
+		// if one of the lists isn't done
+		if (!done1 || !done2) // continue on one list
 		{
 			// choosing what list to run on
-			if (curr1 != null) 	{ i = curr1; }
-			else 				{ i = curr2; }
+			if (!done1) 		{ i = curr1; to_go = nodes_left1; }
+			else 				{ i = curr2; to_go = nodes_left2; }
 
-			// continue adding
-			while (i != null) 	// head should go all the way down.
+
+			while (to_go > 0 && is_carry)
 			{
-				if (is_carry)	
+				if (i.rank == curr_rank) // carry goes on
 				{
-					if (i.rank == curr_rank) // carry goes on
-					{
-						is_carry = true;
+					is_carry = true;
+					to_go--;
 
-						tmp = i.next;
-						carry = link(i, carry);
-						i = tmp;
+					tmp = i.next;
+					carry = link(i, carry);
+					i = tmp;
 
-						curr_rank++;
-					}
-					else					// carry is pluged in, and we won't have another carry
-					{
-						is_carry = false;
-
-						if (is_first_node) { new_list_start = carry; head = carry; }
-						else { head.next = carry; head = head.next; }
-					}
+					curr_rank++;
 				}
-				else // just concat 'i' to 'head'
+				else					// carry is pluged in, and we won't have another carry
 				{
 					is_carry = false;
 
-					head.next = i;
-					head = head.next; i = i.next;
+					if (is_first_node) { new_list_start = carry; head = carry; }
+					else { head.next = carry; head = head.next; }
 				}
 			}
+
+			while (to_go > 0)
+			{
+				to_go--;
+
+				head.next = i;
+				head = head.next; i = i.next;
+			}
 		}
-		
+
 		// both lists are gone
 		// there still might be carry
 		if (is_carry)
@@ -512,6 +535,8 @@ public class BinomialHeap
 	// Delete later!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public static void main(String[] args)
 	{
+		debug_meld();
+
 		System.out.println("Hello World");	
 
 		BinomialHeap b = new BinomialHeap();
@@ -526,5 +551,40 @@ public class BinomialHeap
 		b.print();
 
 
+	}
+
+	public static void debug_meld()
+	{
+		
+		BinomialHeap b1 = new BinomialHeap();
+		b1.insert(1, "");
+
+		BinomialHeap b2 = new BinomialHeap();
+		b2.insert(2, "");
+
+		b1.meld(b2);
+		System.out.println("done-----------------");
+		System.out.println("done-----------------");
+		System.out.println("done-----------------");
+	}
+
+	public static void print_n_nodes(HeapNode first, int n)
+	{
+		HeapNode head = first;
+		for (int i = 0; i<n && head!=null; i++)
+		{
+			// System.out.print("rank: ");
+			// System.out.print(head.rank);
+			if (head.rank == i)
+			{
+				head = head.next;
+				System.out.print(i);
+			}
+			else
+			{
+				System.out.print(" ");
+			}
+		}
+		System.out.print("\n");
 	}
 }
