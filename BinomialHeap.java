@@ -644,8 +644,8 @@ public class BinomialHeap
 		b1.insert(7,"");
 		b1.insert(8,"");
 
-		b1.deleteMin();
-
+		//sb1.deleteMin();
+		b1.print();
 
 		BinomialHeap b2 = new BinomialHeap();
 		b2.insert(1, "");
