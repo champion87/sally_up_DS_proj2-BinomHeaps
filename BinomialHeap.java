@@ -596,14 +596,13 @@ public class BinomialHeap
 		{
 			HeapNode c = this.child;
 
-			if (this.child == null)
-				return;
-
 			for (int i = 0; i < depth; i++)
 				System.out.print(">");
 			
-				System.out.println(this.item.key);
-			
+			System.out.println(this.item.key);
+			if (this.child == null)
+				return;
+
 			/* 
 			do
 			{
