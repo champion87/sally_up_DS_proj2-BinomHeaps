@@ -109,9 +109,9 @@ public class Theoretic {
             melds += b.insert(ar[i], null);
         
         b.print();
-        return;
+        
         // delete
-        /* 
+         
         for (int i = 0; i < n / 2; i++)
         {
             if (i == 20)
@@ -135,7 +135,7 @@ public class Theoretic {
         System.out.println("Num Trees: " + b.numTrees());
         System.out.println("Melds: " + melds);
         System.out.println("Ranks: " + ranks);
-    */
+    
     }
 
     static void test3(int n)
