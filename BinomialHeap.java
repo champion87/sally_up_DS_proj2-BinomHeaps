@@ -40,16 +40,16 @@ public class BinomialHeap
 			new_heap.size = 1;
 		}
 
-		while (curr.next != null && curr.next != node)
-		{
+		do {
 			curr.parent = null;
 			new_heap.size += (int)Math.pow(2, curr.rank); 
-			if (curr.item.key < new_heap.min.item.key)
-				new_heap.min = curr;
+			if (curr.item.key < new_heap.min.item.key) { new_heap.min = curr; }
 			curr = curr.next;
 		}
-		if (curr.item.key < new_heap.min.item.key)
-			new_heap.min = curr;
+		while (curr.next != null && curr.next != node);
+
+		// if (curr.item.key < new_heap.min.item.key)
+		// 	new_heap.min = curr;
 		
 		if (curr.next == null)
 			curr.next = curr;
@@ -634,19 +634,23 @@ public class BinomialHeap
 	{
 		
 		BinomialHeap b1 = new BinomialHeap();
-		b1.insert(2, "");
+		// b1.insert(2, "");
 
-		b1.insert(3, "");
-		b1.insert(4,"");
+		// b1.insert(3, "");
+		// b1.insert(4,"");
 
 		b1.insert(5, "");
 		b1.insert(6, "");
 		b1.insert(7,"");
 		b1.insert(8,"");
 
+		b1.deleteMin();
+
 
 		BinomialHeap b2 = new BinomialHeap();
 		b2.insert(1, "");
+
+		b2.insert(0, "");
 
 		b1.meld(b2);
 		System.out.println("done-----------------");
