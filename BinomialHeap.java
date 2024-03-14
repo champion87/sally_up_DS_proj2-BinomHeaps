@@ -54,24 +54,73 @@ public class BinomialHeap
 		if (curr.next == null)
 			curr.next = curr;
 		new_heap.last = curr;
+
+		new_heap.reverse();
+
 		return new_heap;
+	}
+
+	// reverses the structure of the trees list
+	void reverse()
+    {
+		HeapNode head_ref = this.last.next;
+        // if list is empty
+        if (head_ref == null || this.last == head_ref)
+            return;
+ 
+        // reverse procedure same as reversing a
+        // singly linked list
+        HeapNode prev = this.last;
+        HeapNode current = head_ref;
+        HeapNode next;
+        do {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        } while (current != (head_ref));
+ 
+        // adjusting the links so as to make the
+        // last node point to the first node
+        (head_ref).next = this.last;
+        //head_ref = prev;
+        //this.last.next = this.last;
+		this.last = head_ref;
+    }
+
+	void add(int k)
+	{
+		HeapNode n = new HeapNode(new HeapItem(k, null));
+		n.next = this.last.next;
+		this.last.next = n;
+		this.last = n;
+	}
+
+	void p()
+	{
+		HeapNode c = this.last.next;
+		do
+		{
+			System.out.println(c.item.key);
+			c = c.next;
+		} while (c != this.last.next);
 	}
 
 
 	public void print()
 	{
-		System.out.println(this.last == null);
 		HeapNode curr = this.last.next;
 
 		if (curr == curr.next)
 		{
-			System.out.println(curr.item.key);
+			//System.out.println(curr.item.key);
+			curr.print_tree();
 			return;
 		}
 
 		while (curr != null && curr != this.last.next)
 		{
-			System.out.println(curr.item.key);
+			curr.print_tree();
 			curr = curr.next;
 		}
 	}
@@ -514,6 +563,29 @@ public class BinomialHeap
 			this.parent = null;
 			this.rank = 0;
 		}
+
+		void print_tree()
+		{
+			if (this.child == null)
+				return;
+			HeapNode c = this.child;
+
+			System.out.println(this.item.key);
+			do
+			{
+				System.out.println(c.item.key);
+				c = c.next;
+			} while (c != this.child && c != null);
+			
+			c = this.child;
+			do
+			{
+				c.print_tree();
+				c = c.next;
+			} while (c != this.child && c != null);
+			
+		}
+
 	}
 
 	/**
@@ -551,14 +623,11 @@ public class BinomialHeap
 		b.insert(3, "3");
 
 		System.out.println("done inserting first item");	
-		//b.insert(10, "syhjk");
+		b.insert(10, "syhjk");
 
 		System.out.println("done inserting 2 items");	
 
-
 		b.print();
-
-
 	}
 
 	public static void debug_meld()
