@@ -208,12 +208,11 @@ public class BinomialHeap
 	public void updateMin()
 	{
 		HeapNode curr = this.last.next;
-		HeapNode cmin = curr;
-		this.min = cmin;
+		this.min = curr;
 
 		do
 		{
-			if (curr.item.key < cmin.item.key)
+			if (curr.item.key < min.item.key)
 				this.min = curr;
 			curr = curr.next;
 		} while (curr != this.last.next);

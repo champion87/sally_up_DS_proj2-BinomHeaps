@@ -116,12 +116,12 @@ public class Theoretic {
         }
         
         b.print();
-        return;
+        // return;
         // delete
-        /* 
+
         for (int i = 0; i < n / 2; i++)
         {
-            System.out.println(i);
+            System.out.println("i: " + i + " deleted min: " + b.min.item.key);
             res = b.deleteMin();
             //System.out.println();
             b.print();
@@ -134,7 +134,6 @@ public class Theoretic {
         System.out.println("Num Trees: " + b.numTrees());
         System.out.println("Melds: " + melds);
         System.out.println("Ranks: " + ranks);
-    */
     }
 
     static void test3(int n)
