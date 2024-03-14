@@ -5,7 +5,7 @@ import java.util.List;
 public class Theoretic {
     public static void main(String[] args) {
         System.nanoTime();
-        loop2();
+        loop3();
     }
 
     static void loop1()
@@ -38,8 +38,8 @@ public class Theoretic {
         System.out.println("TEST 2");
         for (int i = 1; i <= 6; i++)
         {
-            //n = (int)Math.pow(3, i + 5) - 1;
-            n = (int)Math.pow(3, i) - 1;
+            System.out.println(i);
+            n = (int)Math.pow(3, i + 5) - 1;
             start = System.nanoTime();
             test2(n);
             end = System.nanoTime();
