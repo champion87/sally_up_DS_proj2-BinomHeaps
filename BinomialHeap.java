@@ -52,10 +52,13 @@ public class BinomialHeap
 		}
 		while (curr.next != null && curr.next != node);
 
-		if (curr.item.key < new_heap.min.item.key)
-		 	new_heap.min = curr;
-		curr.parent = null;
-		new_heap.size += (int)Math.pow(2, curr.rank);
+		if (curr.next != curr)
+		{
+			if (curr.item.key < new_heap.min.item.key)
+				new_heap.min = curr;
+			curr.parent = null;
+			new_heap.size += (int)Math.pow(2, curr.rank);
+		}
 		
 		if (curr.next == null) // assert
 			curr.next = curr;
@@ -119,7 +122,6 @@ public class BinomialHeap
 
 		if (curr == curr.next)
 		{
-			//System.out.println(curr.item.key);
 			curr.print_tree(0);
 			return;
 		}
@@ -127,7 +129,6 @@ public class BinomialHeap
 		do
 		{
 			curr.print_tree(0);
-			System.out.println();
 			curr = curr.next;
 		} while (curr != this.last.next);
 	}
@@ -185,6 +186,8 @@ public class BinomialHeap
 		{
 			this.last = prev;
 		}
+		
+		this.updateMin();
 		this.meld(children_heap);
 	}
 
@@ -202,12 +205,15 @@ public class BinomialHeap
 	public void updateMin()
 	{
 		HeapNode curr = this.last.next;
+		HeapNode cmin = curr;
+		this.min = cmin;
 
-		while (curr != this.last)
+		do
 		{
-			if (curr.item.key < this.min.item.key)
+			if (curr.item.key < cmin.item.key)
 				this.min = curr;
-		}
+			curr = curr.next;
+		} while (curr != this.last.next);
 	}
 
 	/**
@@ -226,6 +232,7 @@ public class BinomialHeap
 		{
 			swapNodeItems(curr, curr.parent);
 			curr = curr.parent;
+			//System.out.println(curr.parent.item.key);
 		}
 
 		if (curr.parent == null) // maybe we need to update minimum in heap
@@ -291,9 +298,6 @@ public class BinomialHeap
 		}
 		last.next = bigger;
 
-
-		System.out.print("smaller: ");
-		System.out.println(smaller);
 		return smaller;
 	}
 
@@ -318,8 +322,6 @@ public class BinomialHeap
 		if (heap2.empty()) { return; }
 		else if (this.empty())
 		{
-			System.out.println("this.empty()");
-
 			this.last = heap2.last;
 			this.min = heap2.min;
 			this.size = heap2.size;
@@ -408,7 +410,6 @@ public class BinomialHeap
 
 					tmp1 = curr1.next;
 					tmp2 = curr2.next;
-					System.out.println("wow");
 					carry = link(curr2, curr1);
 					curr1 = tmp1;
 					curr2 = tmp2;
@@ -645,16 +646,22 @@ public class BinomialHeap
 		b.insert(6, "syhjk");
 		b.insert(7, "sergv");
 		b.insert(8, "sergv");
+		b.insert(9, "sergv");
+		b.insert(10, "sergv");
 
 		b.print();
 
-		b.deleteMin();
+		HeapItem i = b.min.child.item;
+		b.delete(i);
 
+		System.out.println("After decrease:");
+		b.print();
+		System.out.print("min: ");
 		System.out.println(b.min.item.key);
-		b.print();
 
 		b.deleteMin();
 		b.print();
+		System.out.print("min: ");
 		System.out.println(b.min.item.key);
 
 	}

@@ -1,12 +1,10 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Theoretic {
     public static void main(String[] args) {
-        test2(10);
+        test1(8);
 
         /*
          * 
@@ -84,8 +82,11 @@ public class Theoretic {
     {
         BinomialHeap b = new BinomialHeap();
         for (int i = 1; i <= n; i++)
+        {
             b.insert(i, null);
+        }
 
+        b.print();
         System.out.print("Num Trees: ");
         System.out.println(b.numTrees());
         // TODO: PRINT MELDS
@@ -97,21 +98,33 @@ public class Theoretic {
         List<Integer> al = new ArrayList<>();
         for (int i = 1; i <= n; i++)
             al.add(i);
+
+        System.out.println(al.size());
+        
         Collections.shuffle(al);
         Integer[] ar = new Integer[n];
         al.toArray(ar);
+        System.out.println(ar.length);
 
         // insert elements in random order
         for (int i = 0; i < n; i++)
+        {
             b.insert(ar[i], null);
+            System.out.print(ar[i] + " ");
+        }    
+        System.out.println("\nsize: " + b.size());
         
+        b.print();
+        System.out.println("sedrftjgred");
         // delete
         for (int i = 0; i < n / 2; i++)
+        {
             b.deleteMin();
+            System.out.print(b.size() + " ");
+        }
 
-        System.out.println(ar[0]);
-
-        System.out.print("Num Trees: ");
+        b.print();
+        System.out.print("size: " + b.size() + " Num Trees: ");
         System.out.println(b.numTrees());
         // TODO: PRINT MELDS
     }
