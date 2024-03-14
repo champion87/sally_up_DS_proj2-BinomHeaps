@@ -35,6 +35,8 @@ public class BinomialHeap
 
 		HeapNode curr = node;
 
+		if (node == null)
+			return new_heap;;;;;dhbhbg;;;;;;;hgggoihjepoirkf1-ghnhbb5
 		// if (curr.next == curr) // only one tree
 		// {
 		// 	new_heap.size = 1;
@@ -51,6 +53,8 @@ public class BinomialHeap
 
 		if (curr.item.key < new_heap.min.item.key)
 		 	new_heap.min = curr;
+		curr.parent = null;
+		new_heap.size += (int)Math.pow(2, curr.rank); 
 		
 		if (curr.next == null) // assert
 			curr.next = curr;
@@ -631,19 +635,19 @@ public class BinomialHeap
 	{
 		debug_meld();
 
-		System.out.println("Hello World");	
+		// System.out.println("Hello World");	
 
-		BinomialHeap b = new BinomialHeap();
-		b.insert(5, "3");
-		b.insert(6, "syhjk");
-		b.insert(7, "sergv");
-		b.insert(8, "sergv");
+		// BinomialHeap b = new BinomialHeap();
+		// b.insert(5, "3");
+		// b.insert(6, "syhjk");
+		// b.insert(7, "sergv");
+		// b.insert(8, "sergv");
 
-		b.print();
+		// b.print();
 
-		b.deleteMin();
+		// b.deleteMin();
 
-		b.print();
+		// b.print();
 	}
 
 	public static void debug_meld()
@@ -663,10 +667,11 @@ public class BinomialHeap
 		b1.print();
 
 		b1.deleteMin();
+		b1.deleteMin();
 
 		
-		System.out.println("\n");
-		// b1.print();
+		System.out.println("xxxx\n");
+		b1.print();
 
 
 		BinomialHeap b2 = new BinomialHeap();
