@@ -35,10 +35,11 @@ public class BinomialHeap
 
 		HeapNode curr = node;
 
-		if (curr.next == curr) // only one tree
-		{
-			new_heap.size = 1;
-		}
+		// if (curr.next == curr) // only one tree
+		// {
+		// 	new_heap.size = 1;
+		// 	return new_heap;
+		// }
 
 		do {
 			curr.parent = null;
@@ -46,15 +47,15 @@ public class BinomialHeap
 			if (curr.item.key < new_heap.min.item.key) { new_heap.min = curr; }
 			curr = curr.next;
 		}
-		while (curr.next != null && curr.next != node);
+		while (curr.next != null && curr != node);
 
 		// if (curr.item.key < new_heap.min.item.key)
 		// 	new_heap.min = curr;
 		
-		if (curr.next == null)
+		if (curr.next == null) // assert
 			curr.next = curr;
-		new_heap.last = curr;
 
+		new_heap.last = curr;
 		new_heap.reverse();
 
 		return new_heap;
@@ -272,9 +273,18 @@ public class BinomialHeap
 		{
 			bigger.next = smaller.child;
 		}
-
+		
 		smaller.child = bigger;
 		bigger.parent = smaller;
+
+		// maintaining circular list........ :(
+		HeapNode last = smaller.child;
+		for (int i = 0; i < smaller.rank; i++)
+		{
+			last = last.next;
+		}
+		last.next = bigger;
+
 
 		System.out.print("smaller: ");
 		System.out.println(smaller);
@@ -644,7 +654,11 @@ public class BinomialHeap
 		b1.insert(7,"");
 		b1.insert(8,"");
 
+		b1.print();
+
 		b1.deleteMin();
+
+		b1.print();
 
 
 		BinomialHeap b2 = new BinomialHeap();
