@@ -84,6 +84,7 @@ public class Theoretic {
         for (int i = 1; i <= n; i++)
         {
             b.insert(i, null);
+            b.print();
         }
 
         b.print();
