@@ -59,9 +59,6 @@ public class BinomialHeap
 			curr.parent = null;
 			new_heap.size += (int)Math.pow(2, curr.rank);
 		}
-		
-		if (curr.next == null) // assert
-			curr.next = curr;
 
 		new_heap.last = curr;
 		new_heap.reverse();
@@ -140,12 +137,11 @@ public class BinomialHeap
 	 * Insert (key,info) into the heap and return the newly generated HeapItem.
 	 *
 	 */
-	public HeapItem insert(int key, String info) 
+	public int insert(int key, String info) 
 	{    
 		HeapItem new_item = new HeapItem(key, info);
 		BinomialHeap new_heap = node_to_heap(new_item.node);
-		this.meld(new_heap);
-		return new_item;
+		return this.meld(new_heap);
 	}
 
 	// returns null if only one tree in heap
@@ -164,10 +160,11 @@ public class BinomialHeap
 	 * Delete the minimal item
 	 *
 	 */
-	public void deleteMin() 
+	public int[] deleteMin() 
 	// TODO update size
 	{
 		// TODO case many trees - cut from parent, close the top linked list cycle, meld.
+		int[] data = {this.min.rank, 0};
 
 		BinomialHeap children_heap = node_to_heap(this.min.child);
 
@@ -177,7 +174,7 @@ public class BinomialHeap
 			this.min = children_heap.min;
 			this.last = children_heap.last;
 			this.size = children_heap.size;
-			return;
+			return data;
 		}
 
 		prev.next = this.min.next;
@@ -188,7 +185,8 @@ public class BinomialHeap
 		}
 		
 		this.updateMin();
-		this.meld(children_heap);
+		data[1] = this.meld(children_heap);
+		return data;
 	}
 
 	/**
@@ -317,16 +315,17 @@ public class BinomialHeap
 	 *  - size is valid
 	 *  - 
 	 */
-	public void meld(BinomialHeap heap2) // TODO
+	public int meld(BinomialHeap heap2) // TODO
 	{
+		int cnt = 0;
 		// edge cases - done
-		if (heap2.empty()) { return; }
+		if (heap2.empty()) { return 0; }
 		else if (this.empty())
 		{
 			this.last = heap2.last;
 			this.min = heap2.min;
 			this.size = heap2.size;
-			return;
+			return 0;
 		}
 
 		// from now on, both lists have at least one element.
@@ -373,6 +372,7 @@ public class BinomialHeap
 
 					tmp1 = curr1.next; tmp2 = curr2.next;
 					carry = link(curr1, curr2);
+					cnt++;
 					curr1 = tmp1; curr2 = tmp2;
 				}
 				else if (curr_rank == curr1.rank && curr_rank != curr2.rank)
@@ -382,6 +382,7 @@ public class BinomialHeap
 
 					tmp1 = curr1.next;
 					carry = link(curr1, carry);
+					cnt++;
 					curr1 = tmp1;
 				}
 				else if (curr_rank != curr1.rank && curr_rank == curr2.rank)
@@ -391,6 +392,7 @@ public class BinomialHeap
 
 					tmp2 = curr2.next;
 					carry = link(curr2, carry);
+					cnt++;
 					curr2 = tmp2;
 				}
 				else if (curr_rank != curr1.rank && curr_rank != curr2.rank)
@@ -412,6 +414,7 @@ public class BinomialHeap
 					tmp1 = curr1.next;
 					tmp2 = curr2.next;
 					carry = link(curr2, curr1);
+					cnt++;
 					curr1 = tmp1;
 					curr2 = tmp2;
 				}
@@ -474,6 +477,7 @@ public class BinomialHeap
 
 					tmp = i.next;
 					carry = link(i, carry);
+					cnt++;
 					i = tmp;
 
 					curr_rank++;
@@ -508,6 +512,7 @@ public class BinomialHeap
 
 		this.last = head;
 		this.last.next = new_list_start;
+		return cnt;
 	}
 
 	/**

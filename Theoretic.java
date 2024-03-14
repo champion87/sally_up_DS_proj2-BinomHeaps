@@ -4,15 +4,8 @@ import java.util.List;
 
 public class Theoretic {
     public static void main(String[] args) {
-        test1(8);
-
-        /*
-         * 
-         * WHAT WE NEED TO ADD:
-         * - LINK COUNTER FOR MELD - TO RETURN
-         * - RANK COUNTER FOR DELETEMIN - TO RETURN
-         * 
-         */
+        System.nanoTime();
+        loop2();
     }
 
     static void loop1()
@@ -26,12 +19,12 @@ public class Theoretic {
         {
             n = (int)Math.pow(3, i + 5) - 1;
             System.out.println(i);
-            start = System.currentTimeMillis();
+            start = System.nanoTime();
             test1(n);
-            end = System.currentTimeMillis();
+            end = System.nanoTime();
             
-            System.out.println("time:");
-            System.out.println(end - start);
+            System.out.println("time: " + ((end - start) / 1000));
+            System.out.println();
         }
         System.out.println();
     }
@@ -42,17 +35,17 @@ public class Theoretic {
         long end;
         int n;
 
-        System.out.println("TEST 1");
+        System.out.println("TEST 2");
         for (int i = 1; i <= 6; i++)
         {
-            n = (int)Math.pow(3, i + 5) - 1;
+            //n = (int)Math.pow(3, i + 5) - 1;
+            n = (int)Math.pow(3, i) - 1;
             System.out.println(i);
-            start = System.currentTimeMillis();
-            test2(n);
-            end = System.currentTimeMillis();
+            start = System.nanoTime();
+            if (i == 4) test2(n);
+            end = System.nanoTime();
             
-            System.out.println("time:");
-            System.out.println(end - start);
+            System.out.println("time: " + ((end - start) / 1000));
         }
         System.out.println();
     }
@@ -63,17 +56,17 @@ public class Theoretic {
         long end;
         int n;
 
-        System.out.println("TEST 1");
+        System.out.println("TEST 3");
         for (int i = 1; i <= 6; i++)
         {
             n = (int)Math.pow(3, i + 5) - 1;
             System.out.println(i);
-            start = System.currentTimeMillis();
+            start = System.nanoTime();
             test3(n);
-            end = System.currentTimeMillis();
+            end = System.nanoTime();
             
-            System.out.println("time:");
-            System.out.println(end - start);
+            System.out.println("time: " + ((end - start) / 1000));
+            System.out.println();
         }
         System.out.println();
     }
@@ -81,68 +74,74 @@ public class Theoretic {
     static void test1(int n)
     {
         BinomialHeap b = new BinomialHeap();
+        int melds = 0;
+
         for (int i = 1; i <= n; i++)
         {
-            b.insert(i, null);
-            b.print();
+            melds += b.insert(i, null);
         }
 
-        b.print();
         System.out.print("Num Trees: ");
         System.out.println(b.numTrees());
-        // TODO: PRINT MELDS
+        System.out.println("Melds: " + melds);
     }
 
     static void test2(int n)
     {
         BinomialHeap b = new BinomialHeap();
         List<Integer> al = new ArrayList<>();
+        int[] res = {0, 0};
+        int melds = 0;
+        int ranks = 0;
+
         for (int i = 1; i <= n; i++)
             al.add(i);
-
-        System.out.println(al.size());
         
         Collections.shuffle(al);
         Integer[] ar = new Integer[n];
         al.toArray(ar);
-        System.out.println(ar.length);
 
         // insert elements in random order
         for (int i = 0; i < n; i++)
-        {
-            b.insert(ar[i], null);
-            System.out.print(ar[i] + " ");
-        }    
-        System.out.println("\nsize: " + b.size());
+            melds += b.insert(ar[i], null);
         
         b.print();
-        System.out.println("sedrftjgred");
         // delete
         for (int i = 0; i < n / 2; i++)
         {
-            b.deleteMin();
-            System.out.print(b.size() + " ");
+            //System.out.println(i);
+            res = b.deleteMin();
+            //System.out.println();
+            //b.print();
+            melds += res[1];
+            ranks += res[0];
         }
 
-        b.print();
-        System.out.print("size: " + b.size() + " Num Trees: ");
-        System.out.println(b.numTrees());
-        // TODO: PRINT MELDS
+        System.out.println("Num Trees: " + b.numTrees());
+        System.out.println("Melds: " + melds);
+        System.out.println("Ranks: " + ranks);
     }
 
     static void test3(int n)
     {
         BinomialHeap b = new BinomialHeap();
+        int[] res = {0, 0};
+        int melds = 0;
+        int ranks = 0;
 
-        for (int i = n; i > 0; i++)
-            b.insert(i, null);
+        for (int i = n; i > 0; i--)
+            melds += b.insert(i, null);
 
         while (b.size() > 31)
-            b.deleteMin();
+        {
+            res = b.deleteMin();
+            melds += res[1];
+            ranks += res[0];
+        }
 
         System.out.print("Num Trees: ");
         System.out.println(b.numTrees());
-        // TODO: PRINT MELDS
-        // TODO: PRINT SUM DELETED RANKS
+        System.out.println("Melds: " + melds);
+        System.out.println("Ranks: " + ranks);
     }
 }
