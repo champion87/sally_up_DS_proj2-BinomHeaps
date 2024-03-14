@@ -589,7 +589,6 @@ public class BinomialHeap
 
 		BinomialHeap b = new BinomialHeap();
 		b.insert(5, "3");
-
 		b.insert(6, "syhjk");
 		b.insert(7, "sergv");
 		b.insert(8, "sergv");
