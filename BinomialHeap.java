@@ -62,6 +62,7 @@ public class BinomialHeap
 
 		new_heap.last = curr;
 		new_heap.reverse();
+		new_heap.updateMin();
 
 		return new_heap;
 	}
@@ -176,6 +177,8 @@ public class BinomialHeap
 			this.size = children_heap.size;
 			return data;
 		}
+		System.out.println("prev: " + prev.item.key);
+		System.out.println("this.min.next: " + this.min.next.item.key);
 
 		prev.next = this.min.next;
 		this.size = this.size - 1 - children_heap.size;
@@ -184,7 +187,9 @@ public class BinomialHeap
 			this.last = prev;
 		}
 		
+		//this.print();
 		this.updateMin();
+		System.out.println("mins: " + this.min.item.key + ", " + children_heap.min.item.key);
 		data[1] = this.meld(children_heap);
 		return data;
 	}
@@ -211,7 +216,6 @@ public class BinomialHeap
 			if (curr.item.key < cmin.item.key)
 				this.min = curr;
 			curr = curr.next;
-			System.out.println("b");
 		} while (curr != this.last.next);
 	}
 
@@ -360,7 +364,6 @@ public class BinomialHeap
 		// add until one of the lists is over
 		while (!done1 && !done2)
 		{
-			System.out.println("g");
 			if (is_carry)
 			{
 				if (curr_rank == curr1.rank && curr_rank == curr2.rank)
@@ -593,11 +596,14 @@ public class BinomialHeap
 		{
 			HeapNode c = this.child;
 
-			for (int i = 0; i < depth; i++)
-				System.out.print(">");
-			System.out.println(this.item.key);
 			if (this.child == null)
 				return;
+
+			for (int i = 0; i < depth; i++)
+				System.out.print(">");
+			
+				System.out.println(this.item.key);
+			
 			/* 
 			do
 			{

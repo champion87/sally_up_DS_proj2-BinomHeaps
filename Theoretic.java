@@ -114,8 +114,9 @@ public class Theoretic {
         {
             if (i == 20)
                 break;
-            if (i == 18)
+            if (i == 17 || i == 16 || i == 3)
             {
+                System.out.println("sdjyfhg");
                 b.print();
                 System.out.println("min: " + b.min.item.key + "\n\n");
             }
