@@ -47,10 +47,10 @@ public class BinomialHeap
 			if (curr.item.key < new_heap.min.item.key) { new_heap.min = curr; }
 			curr = curr.next;
 		}
-		while (curr.next != null && curr != node);
+		while (curr.next != null && curr.next != node);
 
-		// if (curr.item.key < new_heap.min.item.key)
-		// 	new_heap.min = curr;
+		if (curr.item.key < new_heap.min.item.key)
+		 	new_heap.min = curr;
 		
 		if (curr.next == null) // assert
 			curr.next = curr;
@@ -663,7 +663,9 @@ public class BinomialHeap
 
 		b1.deleteMin();
 
-		b1.print();
+		
+		System.out.println("\n");
+		// b1.print();
 
 
 		BinomialHeap b2 = new BinomialHeap();
