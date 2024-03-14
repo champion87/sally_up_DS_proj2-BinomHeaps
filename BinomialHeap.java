@@ -590,6 +590,7 @@ public class BinomialHeap
 
 		System.out.println("done inserting first item");	
 		b.insert(10, "syhjk");
+		b.insert(5, null);
 
 		System.out.println("done inserting 2 items");	
 
