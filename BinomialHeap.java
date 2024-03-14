@@ -22,6 +22,8 @@ public class BinomialHeap
 	// Make Heap with one node
 	// Given a node that defines a binomials heap, initializes a new heap
 	// detaches from parents if there are any
+	// pre: node != null
+	// O(log n)
 	public static BinomialHeap node_to_heap(HeapNode node)
 	{
 		BinomialHeap new_heap = new BinomialHeap();
@@ -57,7 +59,8 @@ public class BinomialHeap
 	}
 
 	// reverses the structure of the trees list
-	void reverse()
+	// O(log n)
+	private void reverse()
     {
 		HeapNode head_ref = this.last.next;
         if (head_ref == null || this.last == head_ref)
@@ -83,6 +86,8 @@ public class BinomialHeap
 	 *
 	 * Insert (key,info) into the heap and return the newly generated HeapItem.
 	 *
+	 * 
+	 * O(log n)
 	 */
 	public HeapItem insert(int key, String info) 
 	{    
@@ -93,6 +98,7 @@ public class BinomialHeap
 	}
 
 	// returns null if only one tree in heap
+	// O(log n)
 	private HeapNode find_prev()
 	{
 		HeapNode c = this.min.next;
@@ -107,6 +113,7 @@ public class BinomialHeap
 	 * 
 	 * Delete the minimal item
 	 *
+	 * O(log n)
 	 */
 	public void deleteMin() 
 	{
@@ -143,6 +150,7 @@ public class BinomialHeap
 	} 
 
 	// Assumes the heap is valid, makes this.min = minimun
+	// O(log n)
 	public void updateMin()
 	{
 		HeapNode curr = this.last.next;
@@ -161,7 +169,7 @@ public class BinomialHeap
 	 * pre: 0 < diff < item.key
 	 * 
 	 * Decrease the key of item by diff and fix the heap. 
-	 * 
+	 * O(log n)
 	 */
 	public void decreaseKey(HeapItem item, int diff) 
 	{    
@@ -195,6 +203,7 @@ public class BinomialHeap
 	 * 
 	 * Delete the item from the heap.
 	 *
+	 * O(log n)
 	 */
 	public void delete(HeapItem item)
 	{    
@@ -205,8 +214,11 @@ public class BinomialHeap
 	/*
 	 * responsible for maintaining:
 	 *  - rank
-	 *  - 
 	 * assumes a,b are of the same rank
+	 * 
+	 * O(1) if we could avoid maintaining circular lists.
+	 * we were'nt taught a better way to implement this (for example, doublly linked lists)
+	 * so due to shortage in time we maintained the circular list using a for loop.
 	 */
 	private HeapNode link(HeapNode a, HeapNode b)
 	{
@@ -228,28 +240,29 @@ public class BinomialHeap
 		bigger.parent = smaller;
 		
 		// maintaining circular list........ :(
-			HeapNode last = smaller.child;
-			for (int i = 0; i < smaller.rank; i++)
-			{
-				last = last.next;
-			}
-			last.next = bigger;
-			
-			smaller.rank++;
-			
-			return smaller;
+		HeapNode last = smaller.child;
+		for (int i = 0; i < smaller.rank; i++)
+		{
+			last = last.next;
 		}
+		last.next = bigger;
+		
+		smaller.rank++;
+		
+		return smaller;
+	}
 		
 		/**
 		 * 
 	 * Meld the heap with heap2
 	 * responsible for maintaining:
 	 *  - size
-	 *  - 
+	 *  
 	 *	assumes the heaps are valid:
 	 *  - minimum is valid
 	 *  - size is valid
-	 *  - 
+	 *  
+	 * O(log n)
 	 */
 	public void meld(BinomialHeap heap2) // TODO
 	{
@@ -465,6 +478,7 @@ public class BinomialHeap
 	 * 
 	 * Return the number of trees in the heap.
 	 * 
+	 * O(log n)
 	 */
 	public int numTrees()
 	{
