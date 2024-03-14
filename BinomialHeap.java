@@ -122,6 +122,7 @@ public class BinomialHeap
 		do
 		{
 			curr.print_tree(0);
+			System.out.println();
 			curr = curr.next;
 		} while (curr != this.last.next);
 	}
