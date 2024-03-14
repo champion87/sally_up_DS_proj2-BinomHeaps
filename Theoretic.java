@@ -106,24 +106,22 @@ public class Theoretic {
 
         // insert elements in random order
         for (int i = 0; i < n; i++)
+        {
             melds += b.insert(ar[i], null);
+            System.out.println("i: " + i +" ar[i]: " + ar[i]);
+            System.out.println("------");
+            b.print();
+            System.out.println("------\n");
+
+        }
         
-        b.print();
         // delete
         for (int i = 0; i < n / 2; i++)
         {
-            if (i == 20)
-                break;
-            if (i == 17 || i == 16 || i == 3)
-            {
-                System.out.println("sdjyfhg");
-                b.print();
-                System.out.println("min: " + b.min.item.key + "\n\n");
-            }
             System.out.println(i);
             res = b.deleteMin();
             //System.out.println();
-            //b.print();
+            b.print();
             melds += res[1];
             ranks += res[0];
         }
