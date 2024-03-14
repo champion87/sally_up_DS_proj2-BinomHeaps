@@ -115,15 +115,15 @@ public class BinomialHeap
 		if (curr == curr.next)
 		{
 			//System.out.println(curr.item.key);
-			curr.print_tree();
+			curr.print_tree(0);
 			return;
 		}
 
-		while (curr != null && curr != this.last.next)
+		do
 		{
-			curr.print_tree();
+			curr.print_tree(0);
 			curr = curr.next;
-		}
+		} while (curr != this.last.next);
 	}
 
 	/**
@@ -574,26 +574,29 @@ public class BinomialHeap
 			this.rank = 0;
 		}
 
-		void print_tree()
+		void print_tree(int depth)
 		{
-			if (this.child == null)
-				return;
 			HeapNode c = this.child;
 
+			for (int i = 0; i < depth; i++)
+				System.out.print(">");
 			System.out.println(this.item.key);
+			if (this.child == null)
+				return;
+			/* 
 			do
 			{
 				System.out.println(c.item.key);
 				c = c.next;
 			} while (c != this.child && c != null);
-			
+			*/
+
 			c = this.child;
 			do
 			{
-				c.print_tree();
+				c.print_tree(depth + 1);
 				c = c.next;
 			} while (c != this.child && c != null);
-			
 		}
 
 	}
@@ -630,12 +633,14 @@ public class BinomialHeap
 		System.out.println("Hello World");	
 
 		BinomialHeap b = new BinomialHeap();
-		b.insert(3, "3");
+		b.insert(5, "3");
+		b.insert(6, "syhjk");
+		b.insert(7, "sergv");
+		b.insert(8, "sergv");
 
-		System.out.println("done inserting first item");	
-		b.insert(10, "syhjk");
+		b.print();
 
-		System.out.println("done inserting 2 items");	
+		b.deleteMin();
 
 		b.print();
 	}
