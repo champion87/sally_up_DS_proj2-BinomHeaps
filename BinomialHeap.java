@@ -54,6 +54,9 @@ public class BinomialHeap
 		if (curr.next == null)
 			curr.next = curr;
 		new_heap.last = curr;
+
+		new_heap.reverse();
+
 		return new_heap;
 	}
 
@@ -106,18 +109,18 @@ public class BinomialHeap
 
 	public void print()
 	{
-		System.out.println(this.last == null);
 		HeapNode curr = this.last.next;
 
 		if (curr == curr.next)
 		{
-			System.out.println(curr.item.key);
+			//System.out.println(curr.item.key);
+			curr.print_tree();
 			return;
 		}
 
 		while (curr != null && curr != this.last.next)
 		{
-			System.out.println(curr.item.key);
+			curr.print_tree();
 			curr = curr.next;
 		}
 	}
@@ -528,6 +531,29 @@ public class BinomialHeap
 			this.parent = null;
 			this.rank = 0;
 		}
+
+		void print_tree()
+		{
+			if (this.child == null)
+				return;
+			HeapNode c = this.child;
+
+			System.out.println(this.item.key);
+			do
+			{
+				System.out.println(c.item.key);
+				c = c.next;
+			} while (c != this.child && c != null);
+			
+			c = this.child;
+			do
+			{
+				c.print_tree();
+				c = c.next;
+			} while (c != this.child && c != null);
+			
+		}
+
 	}
 
 	/**
@@ -560,26 +586,13 @@ public class BinomialHeap
 		System.out.println("Hello World");	
 
 		BinomialHeap b = new BinomialHeap();
-		//b.insert(3, "3");
+		b.insert(3, "3");
 
 		System.out.println("done inserting first item");	
-		//b.insert(10, "syhjk");
+		b.insert(10, "syhjk");
 
 		System.out.println("done inserting 2 items");	
 
-
-		BinomialHeap c = new BinomialHeap();
-		c.insert(0, null);
-		c.add(1);
-		c.add(2);
-		c.add(3);
-		c.add(4);
-		c.p();
-		System.out.println();
-		c.reverse();
-		c.p();
-		//b.print();
-
-
+		b.print();
 	}
 }
