@@ -41,7 +41,7 @@ public class Theoretic {
             //n = (int)Math.pow(3, i + 5) - 1;
             n = (int)Math.pow(3, i) - 1;
             start = System.nanoTime();
-            if (i == 4) test2(n);
+            test2(n);
             end = System.nanoTime();
             
             System.out.println("time: " + ((end - start) / 1000));
@@ -99,32 +99,32 @@ public class Theoretic {
         Collections.shuffle(al);
         Integer[] ar = new Integer[n];
         al.toArray(ar);
-        ar = new Integer[] {61, 32, 4, 62, 18, 75, 72, 14, 36, 48, 26, 15, 
-            37, 31, 3, 7, 41, 45, 80, 69, 47, 17, 50, 12, 77, 38, 44, 52, 66, 56, 25, 68, 23, 49, 11, 60, 6, 59, 34, 2, 64, 28, 71, 21, 51, 46, 67, 79, 29, 
-            8, 10, 22, 9, 78, 53, 74, 16, 27, 58, 19, 13, 73, 55, 54, 40, 30, 33, 39, 42, 24, 63, 1, 5, 35, 
-            43, 57, 76, 70, 20, 65};
+        // ar = new Integer[] {61, 32, 4, 62, 18, 75, 72, 14, 36, 48, 26, 15, 
+        //     37, 31, 3, 7, 41, 45, 80, 69, 47, 17, 50, 12, 77, 38, 44, 52, 66, 56, 25, 68, 23, 49, 11, 60, 6, 59, 34, 2, 64, 28, 71, 21, 51, 46, 67, 79, 29, 
+        //     8, 10, 22, 9, 78, 53, 74, 16, 27, 58, 19, 13, 73, 55, 54, 40, 30, 33, 39, 42, 24, 63, 1, 5, 35, 
+        //     43, 57, 76, 70, 20, 65};
 
         // insert elements in random order
         for (int i = 0; i < n; i++)
         {
             melds += b.insert(ar[i], null);
-            System.out.println("i: " + i +" ar[i]: " + ar[i]);
-            System.out.println("------");
-            b.print();
-            System.out.println("------\n");
+            // System.out.println("i: " + i +" ar[i]: " + ar[i]);
+            // System.out.println("------");
+            // b.print();
+            // System.out.println("------\n");
 
         }
         
-        b.print();
+        // b.print();
         // return;
         // delete
 
         for (int i = 0; i < n / 2; i++)
         {
-            System.out.println("i: " + i + " deleted min: " + b.min.item.key);
+            // System.out.println("i: " + i + " deleted min: " + b.min.item.key);
             res = b.deleteMin();
             //System.out.println();
-            b.print();
+            // b.print();
             melds += res[1];
             ranks += res[0];
         }
