@@ -264,7 +264,7 @@ public class BinomialHeap
 	 *  
 	 * O(log n)
 	 */
-	public void meld(BinomialHeap heap2) // TODO
+	public void meld(BinomialHeap heap2)
 	{
 		// edge cases
 		if (heap2.empty()) { return; }
