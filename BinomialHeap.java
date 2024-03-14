@@ -57,6 +57,52 @@ public class BinomialHeap
 		return new_heap;
 	}
 
+	// reverses the structure of the trees list
+	void reverse()
+    {
+		HeapNode head_ref = this.last.next;
+        // if list is empty
+        if (head_ref == null || this.last == head_ref)
+            return;
+ 
+        // reverse procedure same as reversing a
+        // singly linked list
+        HeapNode prev = this.last;
+        HeapNode current = head_ref;
+        HeapNode next;
+        do {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        } while (current != (head_ref));
+ 
+        // adjusting the links so as to make the
+        // last node point to the first node
+        (head_ref).next = this.last;
+        //head_ref = prev;
+        //this.last.next = this.last;
+		this.last = head_ref;
+    }
+
+	void add(int k)
+	{
+		HeapNode n = new HeapNode(new HeapItem(k, null));
+		n.next = this.last.next;
+		this.last.next = n;
+		this.last = n;
+	}
+
+	void p()
+	{
+		HeapNode c = this.last.next;
+		do
+		{
+			System.out.println(c.item.key);
+			c = c.next;
+		} while (c != this.last.next);
+	}
+
 
 	public void print()
 	{
@@ -514,7 +560,7 @@ public class BinomialHeap
 		System.out.println("Hello World");	
 
 		BinomialHeap b = new BinomialHeap();
-		b.insert(3, "3");
+		//b.insert(3, "3");
 
 		System.out.println("done inserting first item");	
 		//b.insert(10, "syhjk");
@@ -522,7 +568,17 @@ public class BinomialHeap
 		System.out.println("done inserting 2 items");	
 
 
-		b.print();
+		BinomialHeap c = new BinomialHeap();
+		c.insert(0, null);
+		c.add(1);
+		c.add(2);
+		c.add(3);
+		c.add(4);
+		c.p();
+		System.out.println();
+		c.reverse();
+		c.p();
+		//b.print();
 
 
 	}
