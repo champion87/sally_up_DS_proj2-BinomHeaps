@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,6 +102,13 @@ public class Theoretic {
         Integer[] ar = new Integer[n];
         al.toArray(ar);
 
+        // System.out.println(Arrays.toString(ar));
+
+        ar = new Integer[] {61, 32, 4, 62, 18, 75, 72, 14, 36, 48, 26, 15, 
+            37, 31, 3, 7, 41, 45, 80, 69, 47, 17, 50, 12, 77, 38, 44, 52, 66, 56, 25, 68, 23, 49, 11, 60, 6, 59, 34, 2, 64, 28, 71, 21, 51, 46, 67, 79, 29, 
+            8, 10, 22, 9, 78, 53, 74, 16, 27, 58, 19, 13, 73, 55, 54, 40, 30, 33, 39, 42, 24, 63, 1, 5, 35, 
+            43, 57, 76,70,20,65};
+
         // insert elements in random order
         for (int i = 0; i < n; i++)
             melds += b.insert(ar[i], null);
@@ -109,7 +117,7 @@ public class Theoretic {
         // delete
         for (int i = 0; i < n / 2; i++)
         {
-            //System.out.println(i);
+            // System.out.println(i);
             res = b.deleteMin();
             //System.out.println();
             //b.print();
