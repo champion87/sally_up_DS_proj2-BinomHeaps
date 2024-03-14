@@ -211,6 +211,7 @@ public class BinomialHeap
 			if (curr.item.key < cmin.item.key)
 				this.min = curr;
 			curr = curr.next;
+			System.out.println("b");
 		} while (curr != this.last.next);
 	}
 
@@ -359,6 +360,7 @@ public class BinomialHeap
 		// add until one of the lists is over
 		while (!done1 && !done2)
 		{
+			System.out.println("g");
 			if (is_carry)
 			{
 				if (curr_rank == curr1.rank && curr_rank == curr2.rank)
