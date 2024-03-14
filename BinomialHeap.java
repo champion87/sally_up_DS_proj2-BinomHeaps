@@ -276,8 +276,7 @@ public class BinomialHeap
 		if (a.item.key > b.item.key) { bigger = a; smaller = b; }
 		else { bigger = b; smaller = a; }
 
-		smaller.rank++;
-
+		
 		if (smaller.child == null)
 		{
 			bigger.next = bigger;
@@ -289,24 +288,26 @@ public class BinomialHeap
 		
 		smaller.child = bigger;
 		bigger.parent = smaller;
-
+		
 		// maintaining circular list........ :(
-		HeapNode last = smaller.child;
-		for (int i = 0; i < smaller.rank; i++)
-		{
-			last = last.next;
+			HeapNode last = smaller.child;
+			for (int i = 0; i < smaller.rank; i++)
+			{
+				last = last.next;
+			}
+			last.next = bigger;
+			
+			smaller.rank++;
+			
+			return smaller;
 		}
-		last.next = bigger;
-
-		return smaller;
-	}
-
-	// private static HeapNode append(list_start, head) -> the new head
-
-	// private static HeapNode 
-
-	/**
-	 * 
+		
+		// private static HeapNode append(list_start, head) -> the new head
+		
+		// private static HeapNode 
+		
+		/**
+		 * 
 	 * Meld the heap with heap2
 	 * responsible for maintaining:
 	 *  - size
